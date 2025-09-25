@@ -24,8 +24,6 @@ def criar_tabela():
     finally:
         conn.close()
 
-if __name__ == '__main__':
-    criar_tabela()
 
 def adicionar_produto(nome, quantidade, preco):
     conn, cursor = conectar_db()
@@ -40,11 +38,6 @@ def adicionar_produto(nome, quantidade, preco):
         print(f'Erro ao adicionar o produto: {e}')
     finally:
         conn.close()
-
-if __name__ == '__main__':
-    criar_tabela()
-    adicionar_produto('Notebook Dell', 10, 3500.00)
-    adicionar_produto('Mouse sem fio', 50, 85.50)
 
 def visualizar_produtos():
 
@@ -67,14 +60,6 @@ def visualizar_produtos():
     finally:
         conn.close()
 
-if __name__ == '__main__':
-    criar_tabela()
-
-    adicionar_produto('Notebook Dell', 10, 3500.00)
-    adicionar_produto('Mouse Sem Fio', 50, 85.50)
-
-    visualizar_produtos()
-
 def atualizar_produto(produto_id, nova_quantidade, novo_preco):
 
     conn, cursor = conectar_db()
@@ -93,13 +78,31 @@ def atualizar_produto(produto_id, nova_quantidade, novo_preco):
     finally:
         conn.close()
 
-if __name__ == '__main__':
-    criar_tabela()
+def deletar_produto(produto_id):
 
-    adicionar_produto('Notebook Dell', 10, 3500.00)
-    adicionar_produto('Mouse Sem Fio', 50, 85.50)
-    visualizar_produtos()
+    conn, cursor = conectar_db()
+    try:
+        cursor.execute('DELETE FROM produtos WHERE id = ?', (produto_id,))
 
-    atualizar_produto(1, 8, 3200.00)
-    atualizar_produto(2, 60, 75.00)
-    visualizar_produtos()
+        if cursor.rowcount > 0:
+            conn.commit()
+            print(f'Produto de ID {produto_id} deletado com sucesso.')
+        else:
+            print(f'Produto de ID {produto_id} não encontrado para deleção.')
+
+    except sqlite3.Error as e:
+        print(f'Erro ao deletar produto: {e}')
+    finally:
+        conn.close()
+
+
+def limpar_tabela():
+    conn, cursor = conectar_db()
+    try:
+        cursor.execute('DELETE FROM produtos')
+        conn.commit()
+        print("Todos os dados da tabela 'produtos' foram limpos.")
+    except sqlite3.Error as e:
+        print(f'Erro ao limpar a tabela: {e}')
+    finally:
+        conn.close()
