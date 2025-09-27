@@ -1,3 +1,5 @@
+from sys import excepthook
+
 import database
 
 def menu():
@@ -32,4 +34,37 @@ def menu():
             database.visualizar_produtos()
 
         elif escolha == '3':
-            print()
+            print('\n--- Atualizar Produto ---')
+            try:
+                produto_id = int(input('ID do produto a atualizar: '))
+                nova_quantidade = int(input('Nova quantidade: '))
+                novo_preco = float(input('Novo preço (ex:150.50): '))
+
+                database.atualizar_produto(produto_id, nova_quantidade, novo_preco)
+            except ValueError:
+                print('Erro: ID, Quantidade e Preço devem ser números.')
+
+        elif escolha == '4':
+            print('\n--- Deletar Produto ---')
+            try:
+                produto_id = int(input('ID do produto a deletar: '))
+                database.deletar_produto(produto_id)
+            except ValueError:
+                print('Erro: O ID deve ser um número inteiro.')
+
+        elif escolha == '5':
+            confirmacao = input("TEM CERTEZA? Isso deletará TUDO. Digite 'SIM' para continuar!")
+            if confirmacao == 'SIM':
+                database.limpar_tabela()
+            else:
+                print('Operação cancelada.')
+
+        elif escolha == '6':
+            print('Saindo do sistema. Obrigado!')
+            break
+
+        else:
+            print('Opção inválidade. Por favor, escolha um número entre 1 e 6')
+
+if __name__ == '__main__':
+    menu()
