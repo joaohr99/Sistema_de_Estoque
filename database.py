@@ -39,24 +39,21 @@ def adicionar_produto(nome, quantidade, preco):
     finally:
         conn.close()
 
-def visualizar_produtos():
 
+def visualizar_produtos():
+    """Visualiza todos os produtos no estoque e retorna a lista."""
     conn, cursor = conectar_db()
+    produtos = []
     try:
         cursor.execute('SELECT * FROM produtos')
         produtos = cursor.fetchall()
 
-        if not produtos:
-            print('O estoque está vazio.')
-            return
-
-        print('\n --- Produtos em Estoque ---')
-        for produto in produtos:
-            print(f'ID: {produto[0]}, Nome: {produto[1]}, Quantidade: {produto[2]}, Preço: R$ {produto[3]:.2f}')
-        print("-------------------------\n")
+        # O retorno é a única ação de 'visualizar_produtos' agora
+        return produtos
 
     except sqlite3.Error as e:
         print(f"Erro ao visualizar os produtos: {e}")
+        return []
     finally:
         conn.close()
 

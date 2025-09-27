@@ -21,7 +21,6 @@ def menu():
         if escolha == '1':
             print('\n--- Adicionar Produto ---')
             nome = input('Nome do Produto: ')
-
             try:
                 quantidade = int(input("Quantidade: "))
                 preco = float(input("Preço (ex: 150.50):"))
